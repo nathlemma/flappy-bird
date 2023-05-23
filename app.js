@@ -6,12 +6,14 @@ document.addEventListener("DOMContentLoaded", () => {
   let numPlatform = 4
   let platforms = []
   const gravity = 1
+  const platformSpeed = 4
   let time = 0 //seconds
   let flag = true
   let gameOver = false
   let movePlatformID
   let fallID
   let checkHeightID
+  let eventListener
 
   function makeCat() {
     playGround.appendChild(cat)
@@ -115,12 +117,12 @@ document.addEventListener("DOMContentLoaded", () => {
     makeCat()
     makePlatforms()
 
-    movePlatformID = setInterval(movePlatforms, 50, 1)
+    movePlatformID = setInterval(movePlatforms, 50, platformSpeed)
     fallID = setInterval(freeFall, 50)
     checkHeightID = setInterval(checkHeight, 1)
 
-    document.addEventListener("keydown", (event) => {
-      if (event.key == "ArrowUp") {
+    eventListener = document.addEventListener("keydown", (event) => {
+      if (event.key == "ArrowUp" && !gameOver) {
         moveUp(100)
         time = 0
         if (!flag) {
@@ -129,12 +131,24 @@ document.addEventListener("DOMContentLoaded", () => {
           checkHeightID = setInterval(checkHeight, 1)
         }
       }
-      if (event.key == "ArrowRight") {
+      if (event.key == "ArrowRight" && !gameOver) {
         moveRight(30)
+        time = 0
+        if (!flag) {
+          flag = true
+          fallID = setInterval(freeFall, 50)
+          checkHeightID = setInterval(checkHeight, 1)
+        }
       }
 
-      if (event.key == "ArrowLeft") {
+      if (event.key == "ArrowLeft" && !gameOver) {
         moveLeft(30)
+        time = 0
+        if (!flag) {
+          flag = true
+          fallID = setInterval(freeFall, 50)
+          checkHeightID = setInterval(checkHeight, 1)
+        }
       } else {
       }
       console.log("pressed: " + event.key)
