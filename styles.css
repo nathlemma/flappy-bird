@@ -1,0 +1,27 @@
+body {
+    display: grid;
+    background-color: black;
+}
+
+.playGround {
+    width: 400px;
+    height: 600px;
+    background-color: lightskyblue;
+    position: relative;
+    margin: 0 auto;
+}
+
+.cat {
+    width: 40px;
+    height: 40px;
+    background-image:url('./source/cat.png');
+    position: absolute;
+
+}
+
+.platform{
+    width: 90px; 
+    height: 10px;
+    background-color: purple;
+    position: absolute;
+}
