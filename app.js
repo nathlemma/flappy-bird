@@ -3,13 +3,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const cat = document.createElement("div")
   let catLeftSpace = 50
   let catBottomSpace = 500
-  let numPlatform = 1
+  let numPlatform = 4
   let platforms = []
   const gravity = 1
   let time = 0 //seconds
   let flag = true
   let gameOver = false
   let movePlatformID
+  let fallID
+  let checkHeightID
 
   function makeCat() {
     playGround.appendChild(cat)
@@ -18,8 +20,17 @@ document.addEventListener("DOMContentLoaded", () => {
     cat.style.bottom = catBottomSpace + "px"
   }
 
+  function endGame(){
+    clearInterval(movePlatformID)
+    clearInterval(fallID)
+    clearInterval(checkHeightID)
+    gameOver = true
+  }
   function freeFall() {
-    if (catBottomSpace == 0) gameOver = true
+    console.log("cat bottom: " + catBottomSpace)
+    if (catBottomSpace < 0) {
+      endGame()
+    }
     catBottomSpace += gravity * (-2 * time + 10  )
     cat.style.bottom = catBottomSpace + "px"
     time += 1
@@ -49,6 +60,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function movePlatforms(pixel) {
     if (!flag) {
+      if (catBottomSpace < 0) {
+        endGame()
+      }
       catBottomSpace -= pixel
       cat.style.bottom = catBottomSpace + "px"
     }
@@ -75,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     cat.style.left = catLeftSpace + "px"
   }
 
-  function checkHeight(process) {
+  function checkHeight(){
     function compare(div1, div2) {
       var rect1 = div1.getBoundingClientRect()
       var rect2 = div2.getBoundingClientRect()
@@ -85,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
         rect1.top < rect2.bottom &&
         rect1.bottom > rect2.top
       ) {
-        clearInterval(process)
+        clearInterval(fallID)
         flag = false
         console.log("Divs are touching or overlapping.")
         // Do something when the divs touch or overlap
@@ -97,20 +111,23 @@ document.addEventListener("DOMContentLoaded", () => {
       compare(p.element, cat)
     })
   }
-
-
   function run() {
     makeCat()
     makePlatforms()
-    movePlatformID = setInterval(movePlatforms, 50, 1)
 
-    let fallID = setInterval(freeFall, 50)
-    setInterval(checkHeight, 1, fallID)
+    movePlatformID = setInterval(movePlatforms, 50, 1)
+    fallID = setInterval(freeFall, 50)
+    checkHeightID = setInterval(checkHeight, 1)
 
     document.addEventListener("keydown", (event) => {
       if (event.key == "ArrowUp") {
         moveUp(100)
         time = 0
+        if (!flag) {
+          flag = true
+          fallID = setInterval(freeFall, 50)
+          checkHeightID = setInterval(checkHeight, 1)
+        }
       }
       if (event.key == "ArrowRight") {
         moveRight(30)
@@ -124,5 +141,5 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   }
   
-  if(!gameOver) run()
+  run()
 })

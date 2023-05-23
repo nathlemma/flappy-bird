@@ -1,14 +1,14 @@
-body {
+/* body {
     display: grid;
     background-color: black;
-}
+} */
 
 .playGround {
     width: 400px;
     height: 600px;
     background-color: lightskyblue;
     position: relative;
-    margin: 0 auto;
+    /* margin: 0 auto; */
 }
 
 .cat {
