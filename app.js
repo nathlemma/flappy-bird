@@ -8,8 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const gravity = 1
   let gap
   const platformSpeed = 4
-  let time = 0 //seconds
-  let flag = true
+  let time = 0 
+  let fallSpeed = 5
+  let isTouching = false
+  let isFalling = true
   let gameOver = false
   let movePlatformID
   let fallID
@@ -45,9 +47,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function movePlatforms(pixel) {
+  function movePlatforms(fallSpeed) {
     platforms.forEach((platform) => {
-      platform.bottom -= pixel
+      platform.bottom -= fallSpeed
       let element = platform.element
       element.style.bottom = platform.bottom + "px"
       if (platform.bottom < 0) {
@@ -58,10 +60,13 @@ document.addEventListener("DOMContentLoaded", () => {
     })
   }
 
+  function endGame(){
+    console.log("game over")
+  }
+
   function moveUp(pixel) {
     catBottomSpace += pixel
     cat.style.bottom = catBottomSpace + "px"
-
   }
 
   function moveRight(pixel) {
@@ -74,47 +79,37 @@ document.addEventListener("DOMContentLoaded", () => {
     cat.style.left = catLeftSpace + "px"
   }
 
-  function jump(){
-  }
-
   function fall() {
-    isJumping = false
-      clearInterval(upTimerId)
-      downTimerId = setInterval(function () {
-        doodlerBottomSpace -= 5
-        doodler.style.bottom = doodlerBottomSpace + 'px'
-        if (doodlerBottomSpace <= 0) {
-          gameOver()
-        }
-        
-        })
-  
-      },20)
-  }
-
-  // platforms.forEach(platform => {
-  //   if (
-  //     (doodlerBottomSpace >= platform.bottom) &&
-  //     (doodlerBottomSpace <= (platform.bottom + 15)) &&
-  //     ((doodlerLeftSpace + 60) >= platform.left) && 
-  //     (doodlerLeftSpace <= (platform.left + 85)) &&
-  //     !isJumping
-  //     ) {
-  //       console.log('tick')
-  //       startPoint = doodlerBottomSpace
-  //       jump()
-  //       console.log('start', startPoint)
-  //       isJumping = true
-  //     }
-  function freeFall() {
-    console.log("cat bottom: " + catBottomSpace)
     if (catBottomSpace < 0) {
       endGame()
     }
-    catBottomSpace += gravity * (-2 * time + 10  )
-    cat.style.bottom = catBottomSpace + "px"
-    time += 1
+    if(!isTouching) {
+      platforms.forEach((platform) => {
+        if (
+          catBottomSpace >= platform.bottom &&
+          catBottomSpace <= platform.bottom + 15 &&
+          catLeftSpace + 60 >= platform.left &&
+          catLeftSpace <= platform.left + 85
+        ) {
+          isTouching = true
+          isFalling = false
+          console.log("Touching")
+        }
+      })
+    }
+    if (isFalling) {
+      catBottomSpace += gravity * (-2 * time + 10)
+      cat.style.bottom = catBottomSpace + 'px'
+      time += 1
+    }
+    else{
+        clearInterval = fallID
+        catBottomSpace -= fallSpeed
+        cat.style.bottom = cat.bottom + "px"
+    }
+    
   }
+  
 
   // function checkHeight(){
   //   function compare(div1, div2) {
@@ -142,8 +137,8 @@ document.addEventListener("DOMContentLoaded", () => {
     makeCat()
     makePlatforms()
     setInterval(movePlatforms,30,platformSpeed)
+    fallID = setInterval(fall, 30)
+
   }
-  
-  
   run()
 })
