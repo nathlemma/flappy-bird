@@ -1,25 +1,25 @@
-
+.container{
+    display: flex;
+}
 
 .play-ground {
-    margin-left: 100px;
     width: 500px;
     height: 750px; 
     position: absolute;
-    left: 100;
 }
 
 .sky {
+    background-image: url(/flappy-bird/source/sky.png);
     width: 500px;
     height: 580px;
     position: absolute;
-    background-color: skyblue;
 }
 
 .ground{
+    background-image: url(/flappy-bird/source/ground.png);
     width: 500px;
     height: 170px;
     position: absolute;
-    background-color: brown;
     top: 580px;
 }
 
@@ -27,22 +27,30 @@
 .bird{
     width: 60px;
     height: 45px;
-    background-color: yellowgreen;
     position: absolute;
+    background-image: url(/flappy-bird/source/bird.png);
 }
 
 .obstacle{
     width: 60px; 
     height: 300px;
     position: absolute;
-    background-color: darkorange;
+    background-image: url(/flappy-bird/source/pipe.png);
 }
 
 .topObstacle{
     width: 60px; 
     height: 300px;
     position: absolute;
-    background-color: darkorange;
+    background-image: url(/flappy-bird/source/pipe.png);
+    transform: rotate(180deg);
+}
+
+.left-boarder{
+    height: 750px;
+    width: 70px;
+    background-color: bisque;
+    left: 0%;
 }
 
 .settings{
@@ -51,7 +59,6 @@
     width: 100px;
     height: 100px;
     left: 700px;
-
 }
 
 

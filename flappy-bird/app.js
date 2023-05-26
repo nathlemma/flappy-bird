@@ -6,9 +6,10 @@ const obstacleDim = {x:60, y:300}
 const birdInit =  {x: 180, y: skyDim.y/2};
 let loc =  {x: birdInit.x, y: birdInit.y};//current birds location
 const movSpeed = 0 
-const fallSpeed = 3.5
+const fallSpeed = 3.8
+const obstacleSpeed = 6
 const fallInterval = 20
-const jumpHeight = 90
+const jumpHeight = 80
 let fallId
 let timerId
 let isGameOver = false
@@ -63,7 +64,7 @@ function game(){
         const obstacle = document.createElement('div')
         const topObstacle = document.createElement('div')
 
-        let randomHeight = Math.random() * 100
+        let randomHeight = Math.random() * 150
         let h_1 = h_min + randomHeight
         let h_2 = skyDim.y - (gap + h_1)
 
@@ -87,7 +88,7 @@ function game(){
 
         function moveObstacle() {
             if(!isGameOver){
-                obstacleLeft -=2
+                obstacleLeft -=obstacleSpeed
                 obstacle.style.left = obstacleLeft + 'px'
                 topObstacle.style.left = obstacleLeft + 'px'
             }
@@ -109,7 +110,7 @@ function game(){
         }
         let timerId = setInterval(moveObstacle, 20) 
         if (!isGameOver){
-            setTimeout(generateObstacle, 3000)
+            setTimeout(generateObstacle, 1200)
         } 
     }
     
