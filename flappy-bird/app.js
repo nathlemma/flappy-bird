@@ -6,16 +6,20 @@ const obstacleDim = {x:60, y:300}
 const birdInit =  {x: 180, y: skyDim.y/2};
 let loc =  {x: birdInit.x, y: birdInit.y};//current birds location
 const movSpeed = 0 
-const fallSpeed = 2
+const fallSpeed = 0
 const fallInterval = 20
-const jumpHeight = 50
+const jumpHeight = 1
 let fallId, jumpId
 let touchFlag = false //is bird touching ground?
+let timerId
+let isGameOver = false
+let gap = 150
+let h_min = 200
 
 function game(){
     const bird = document.querySelector('.bird')
     const playGround = document.querySelector('.play-ground')
-    const ground = document.querySelector('.ground')
+    //const ground = document.querySelector('.ground')
 
     function move(x,y){
         loc.y = y
@@ -28,10 +32,10 @@ function game(){
 
     function freeMotion(){
         console.log("moving: " + loc.x + ':' + loc.y)
-        if(loc.y<0 || loc.x > skyDim.x-birdDim.x - 5){
+        if(loc.y < 0|| loc.x > skyDim.x-birdDim.x-5){
             touchFlag = true
             //alert("game over")
-            clearInterval(fallId)
+            gameOver()
         }
         else move(loc.x+movSpeed, loc.y-fallSpeed)
     }
@@ -53,10 +57,6 @@ function game(){
         }
     }
 
-    let timerId
-    let isGameOver = false
-    let gap = 100
-    let h_min = 200
     function gameOver(){
         console.log("GAME OVER")
         isGameOver = true
@@ -65,12 +65,11 @@ function game(){
     }
     function generateObstacle() {
         let obstacleLeft = groundDim.x
-        let obstacleBottom = groundDim.y
-
         const obstacle = document.createElement('div')
         const topObstacle = document.createElement('div')
 
-        let randomHeight = Math.random() * 60
+        let randomHeight = Math.random() * 100
+        randomHeight = 0
         let h_1 = h_min + randomHeight
         let h_2 = skyDim.y - (gap + h_1)
 
@@ -99,16 +98,17 @@ function game(){
                 topObstacle.style.left = obstacleLeft + 'px'
             }
 
-            if (obstacleLeft === -10) {
+            if (obstacleLeft === -60) {
                 clearInterval(timerId)
                 playGround.removeChild(obstacle)
                 playGround.removeChild(topObstacle)
             }
             if (
-                obstacleLeft > birdInit.x && obstacleLeft < (birdInit.x+obstacleDim.x) && loc.x === 220 &&
-                (loc.y < obstacleBottom + 153 || loc.y > obstacleBottom + gap -200)||
-                loc.y === 0 
+                obstacleLeft > birdInit.x && obstacleLeft < (birdInit.x+birdDim.x) &&
+                (loc.y < h_1 || loc.y + birdDim.y >  h_1+gap)
                 ) {
+
+                    
                 gameOver()
                 clearInterval(timerId)
             }
