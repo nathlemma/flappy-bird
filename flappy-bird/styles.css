@@ -1,8 +1,4 @@
-.container {
-    background-color;
-    width: 1000px;
-    height: 1000px;
-}
+
 
 .play-ground {
     margin-left: 100px;
@@ -36,6 +32,13 @@
 }
 
 .obstacle{
+    width: 60px; 
+    height: 300px;
+    position: absolute;
+    background-color: darkorange;
+}
+
+.topObstacle{
     width: 60px; 
     height: 300px;
     position: absolute;
