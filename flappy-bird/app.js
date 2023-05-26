@@ -6,11 +6,10 @@ const obstacleDim = {x:60, y:300}
 const birdInit =  {x: 180, y: skyDim.y/2};
 let loc =  {x: birdInit.x, y: birdInit.y};//current birds location
 const movSpeed = 0 
-const fallSpeed = 0
+const fallSpeed = 3.5
 const fallInterval = 20
-const jumpHeight = 1
-let fallId, jumpId
-let touchFlag = false //is bird touching ground?
+const jumpHeight = 90
+let fallId
 let timerId
 let isGameOver = false
 let gap = 150
@@ -27,14 +26,11 @@ function game(){
         bird.style.left = x + 'px'
         bird.style.bottom = y + 'px'
         flag = true
-        
     } 
 
     function freeMotion(){
         console.log("moving: " + loc.x + ':' + loc.y)
         if(loc.y < 0|| loc.x > skyDim.x-birdDim.x-5){
-            touchFlag = true
-            //alert("game over")
             gameOver()
         }
         else move(loc.x+movSpeed, loc.y-fallSpeed)
@@ -43,17 +39,13 @@ function game(){
     function jump(){
         //console.log("jumping")
         if(loc.y < skyDim.y-birdDim.y){
-            // clearInterval(fallId)
-            //console.log(loc.y)
-            
             move(loc.x,loc.y+Math.min(jumpHeight,skyDim.y-birdDim.y - loc.y ))
-            // fallId = setInterval(fall, fallInterval)
         }  
     }
 
     function control(e){
         if(e.keyCode === 32){
-            if(!touchFlag) jump()
+            jump()
         }
     }
 
@@ -62,6 +54,9 @@ function game(){
         isGameOver = true
         clearInterval(timerId)
         clearInterval(fallId)
+        document.removeEventListener('keydown', control)
+        // ground.classList.add('ground')
+        // ground.classList.remove('ground-moving')
     }
     function generateObstacle() {
         let obstacleLeft = groundDim.x
@@ -69,7 +64,6 @@ function game(){
         const topObstacle = document.createElement('div')
 
         let randomHeight = Math.random() * 100
-        randomHeight = 0
         let h_1 = h_min + randomHeight
         let h_2 = skyDim.y - (gap + h_1)
 
@@ -117,9 +111,6 @@ function game(){
         if (!isGameOver){
             setTimeout(generateObstacle, 3000)
         } 
-        
-        
-
     }
     
     move(birdInit.x, birdInit.y)
