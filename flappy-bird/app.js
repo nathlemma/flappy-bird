@@ -30,7 +30,7 @@ function game(){
     } 
 
     function freeMotion(){
-        console.log("moving: " + loc.x + ':' + loc.y)
+        //.log("moving: " + loc.x + ':' + loc.y)
         if(loc.y < 0|| loc.x > skyDim.x-birdDim.x-5){
             gameOver()
         }
@@ -87,13 +87,15 @@ function game(){
 
 
         function moveObstacle() {
+        
             if(!isGameOver){
                 obstacleLeft -=obstacleSpeed
                 obstacle.style.left = obstacleLeft + 'px'
                 topObstacle.style.left = obstacleLeft + 'px'
             }
 
-            if (obstacleLeft === -60) {
+            if (obstacleLeft < -10) {
+                console.log("REMOVEd")
                 clearInterval(timerId)
                 playGround.removeChild(obstacle)
                 playGround.removeChild(topObstacle)

@@ -1,6 +1,16 @@
 .container{
     display: flex;
+    justify-content: center;
 }
+
+.right{
+background-color: black;
+}
+
+.left{
+background-color: black;
+}
+
 
 .play-ground {
     width: 500px;
@@ -49,8 +59,6 @@
 .left-boarder{
     height: 750px;
     width: 70px;
-    background-color: bisque;
-    left: 0%;
 }
 
 .settings{
